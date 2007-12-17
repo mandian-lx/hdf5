@@ -24,7 +24,6 @@ BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
 Requires:	%{libname} = %{version}-%{release}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 HDF5 is a library and file format for storing scientific data. It was
