@@ -3,7 +3,7 @@
 %define libname %mklibname hdf5_ %{major}
 %define version 1.6.5
 %define fversion 1.6.5
-%define release %mkrel 3
+%define release %mkrel 4
 
 Summary:	HDF5 library
 Name:		%{name}
