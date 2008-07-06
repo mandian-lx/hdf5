@@ -1,9 +1,10 @@
 %define name	hdf5
 %define major	0
 %define libname %mklibname hdf5_ %{major}
+%define develname %mklibname %{name} -d
 %define version 1.6.5
 %define fversion 1.6.5
-%define release %mkrel 4
+%define release %mkrel 5
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -46,19 +47,19 @@ applications. HDF5 includes the following improvements.
 %package -n %{libname}
 Summary:	HDF5 development libraries
 Group:		System/Libraries
+Provides:       %{name} = %{version}-%{release}
 
 %description -n %{libname}
 This package contains the libraries needed to run programs dynamically
 linked with hdf5 libraries.
 
-%package -n %{libname}-devel
+%package -n %{develname}
 Summary:	Static libraries and header files for hdf5 development
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
 
-%description -n %{libname}-devel
+%description -n %{develname}
 This package provides static libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
@@ -143,9 +144,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{libname}
 %defattr(-,root,root,755)
-%{_libdir}/*.so.*
+%{_libdir}/*.so.{major}
+%{_libdir}/*.so.{major}.*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %{_libdir}/*.a
 %{_libdir}/*.la
