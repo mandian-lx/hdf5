@@ -3,7 +3,6 @@
 %define libname %mklibname hdf5_ %{major}
 %define develname %mklibname %{name} -d
 %define version 1.8.1
-%define fversion 1.8.1
 %define release %mkrel 1
 
 Summary:	HDF5 library
@@ -12,14 +11,16 @@ Version:	%{version}
 Release:	%{release}
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
-Source0:	ftp://hdf.ncsa.uiuc.edu/HDF5/%{name}-%{version}/src/%{name}-%{fversion}.tar.bz2
+Source0:	ftp://hdf.ncsa.uiuc.edu/HDF5/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
 Patch0:		hdf5-1.6.4-cflags.patch
-#Patch1:		hdf5-1.6.5-nmu.patch
-#Patch2:		hdf5-1.6.5-norpath.patch
-#Patch3:		hdf5-1.6.5-gfortran.patch
-#Patch4:		hdf5-1.6.5-test5.patch
-#Patch5:		hdf5-1.6.5-snprintf.patch
-Patch6:		hdf5-1.6.5-lib64.patch
+Patch1:         %{name}-%{version}-gcc4.patch
+Patch2:		%{name}-1.8.0-signal.patch
+Patch3:		%{name}-1.8.0-destdir.patch
+Patch4:		%{name}-1.8.0-multiarch.patch
+Patch5:		%{name}-1.8.0-scaleoffset.patch
+Patch6:		%{name}-1.6.5-open.patch
+Patch7:		%{name}-1.8.0-longdouble.patch
+Patch8:		hdf5-1.6.5-lib64.patch
 URL:		http://hdf.ncsa.uiuc.edu/HDF5/
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
@@ -64,15 +65,19 @@ This package provides static libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
 %prep
-%setup -q -n %{name}-%{fversion}
-%patch0 -p1 -b .cflags
-#%patch1 -p1 -b .nmu
-#%patch2 -p1 -b .norpath
-#%patch3 -p1 -b .gfortran
-#%patch4 -p1 -b .test5
-#%patch5 -p1 -b .snprintf
+%setup -q
+%patch0 -p1 
+%patch1 -p0
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%ifarch ppc64
+%patch7 -p1
+%endif
 %ifarch x86_64
-%patch6 -p1 -b .64bit
+%patch8 -p1
 %endif
 
 %build
