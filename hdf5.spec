@@ -97,7 +97,6 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %configure2_5x --prefix=%{_prefix} \
 	--enable-cxx \
-	--enable-threadsafe \
 	--with-pthread \
 	--enable-stream-vfd \
 	--with-hdf4=/usr/include \
