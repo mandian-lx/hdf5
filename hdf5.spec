@@ -145,6 +145,7 @@ mkdir -p $RPM_BUILD_ROOT%{_libdir}
 perl -pi -e \
 	"s@^libdir=\'/usr/lib\'@libdir=\'%{_libdir}\'@g" $RPM_BUILD_ROOT%{_libdir}/*.la
 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -159,16 +160,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc COPYING MANIFEST README.txt release_docs/RELEASE.txt
-%doc release_docs/HISTORY.txt doc/html
 %{_bindir}/*
 
 %files -n %{libname}
 %defattr(-,root,root,755)
-%{_libdir}/libhdf5.so.{major}*
+%{_libdir}/libhdf5.so.%{major}*
 
 %files -n %{libname_hl}
 %defattr(-,root,root,755)
-%{_libdir}/libhdf5_hl.so.{major_hl}*
+%{_libdir}/libhdf5_hl.so.%{major_hl}*
 
 %files -n %{develname}
 %defattr(-,root,root)
@@ -177,6 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
-%multiarch %{multiarch_includedir}/*.h
+#%multiarch %{multiarch_includedir}/*.h
 
 
