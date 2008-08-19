@@ -95,7 +95,7 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 %endif
 
 CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
-./configure2_5x --prefix=%{_prefix} \
+%configure2_5x --prefix=%{_prefix} \
 	--enable-cxx \
 	--enable-threadsafe \
 	--with-pthread \
