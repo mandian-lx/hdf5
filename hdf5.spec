@@ -1,6 +1,10 @@
+%define _disable_ld_no_undefined 1
+
 %define name	hdf5
-%define major	0
+%define major	5
+%define major_hl	0
 %define libname %mklibname hdf5_ %{major}
+%define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.1
 %define release %mkrel 1
@@ -16,11 +20,11 @@ Patch0:		hdf5-1.6.4-cflags.patch
 Patch1:         %{name}-%{version}-gcc4.patch
 Patch2:		%{name}-1.8.0-signal.patch
 Patch3:		%{name}-1.8.0-destdir.patch
-Patch4:		%{name}-1.8.0-multiarch.patch
+#Patch4:		%{name}-1.8.0-multiarch.patch
 Patch5:		%{name}-1.8.0-scaleoffset.patch
-Patch6:		%{name}-1.6.5-open.patch
+Patch6:		%{name}-%{version}-build.patch
 Patch7:		%{name}-1.8.0-longdouble.patch
-Patch8:		hdf5-1.6.5-lib64.patch
+Patch8:		%{name}-%{version}-lib64.patch
 URL:		http://hdf.ncsa.uiuc.edu/HDF5/
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
@@ -46,13 +50,23 @@ applications. HDF5 includes the following improvements.
 
 
 %package -n %{libname}
-Summary:	HDF5 development libraries
+Summary:	HDF5 libraries
 Group:		System/Libraries
 Provides:       %{name} = %{version}-%{release}
 
 %description -n %{libname}
 This package contains the libraries needed to run programs dynamically
 linked with hdf5 libraries.
+
+%package -n %{libname_hl}
+Summary:	HDF5 high level libraries
+Group:		System/Libraries
+Provides:       %{name} = %{version}-%{release}
+
+%description -n %{libname_hl}
+This package contains the high level libraries needed to run programs dynamically
+linked with hdf5 libraries.
+
 
 %package -n %{develname}
 Summary:	Static libraries and header files for hdf5 development
@@ -70,15 +84,16 @@ for develop applications requiring the "hdf5" library.
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 %patch5 -p1
-%patch6 -p1
+%patch6
 %ifarch ppc64
 %patch7 -p1
 %endif
 %ifarch x86_64
-%patch8 -p1
+%patch8
 %endif
+
 
 %build
 find $RPM_BUILD_ROOT -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
@@ -101,29 +116,30 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 
 CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %configure2_5x --prefix=%{_prefix} \
-	--enable-cxx \
+	--enable-threadsafe \
 	--with-pthread \
 	--enable-stream-vfd \
 	--with-hdf4=/usr/include \
 	--enable-linux-lfs \
 	--enable-production=yes \
 	--disable-rpath
-make
+
+%make
 
 # all tests must pass on the following architectures
 %ifarch %{ix86} x86_64
-make check || echo "make check failed"
+%make check || echo "make check failed"
 %else
-make -k check || echo "make check failed"
+%make -k check || echo "make check failed"
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_libdir}
 %makeinstall
-cp -p test/.libs/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/
-ln -s %{_libdir}/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libh5test.so.0
-rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
+#cp -p test/.libs/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/
+#ln -s %{_libdir}/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libh5test.so.0
+#rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
 %multiarch_includes $RPM_BUILD_ROOT%{_includedir}/H5pubconf.h
 
 perl -pi -e \
@@ -148,8 +164,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{libname}
 %defattr(-,root,root,755)
-%{_libdir}/*.so.{major}
-%{_libdir}/*.so.{major}.*
+%{_libdir}/libhdf5.so.{major}*
+
+%files -n %{libname_hl}
+%defattr(-,root,root,755)
+%{_libdir}/libhdf5_hl.so.{major_hl}*
 
 %files -n %{develname}
 %defattr(-,root,root)
