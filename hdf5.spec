@@ -2,9 +2,9 @@
 %define major	0
 %define libname %mklibname hdf5_ %{major}
 %define develname %mklibname %{name} -d
-%define version 1.6.5
-%define fversion 1.6.5
-%define release %mkrel 5
+%define version 1.8.1
+%define fversion 1.8.1
+%define release %mkrel 1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -14,11 +14,11 @@ License:	Distributable (see included COPYING)
 Group:		System/Libraries
 Source0:	ftp://hdf.ncsa.uiuc.edu/HDF5/%{name}-%{version}/src/%{name}-%{fversion}.tar.bz2
 Patch0:		hdf5-1.6.4-cflags.patch
-Patch1:		hdf5-1.6.5-nmu.patch
-Patch2:		hdf5-1.6.5-norpath.patch
-Patch3:		hdf5-1.6.5-gfortran.patch
-Patch4:		hdf5-1.6.5-test5.patch
-Patch5:		hdf5-1.6.5-snprintf.patch
+#Patch1:		hdf5-1.6.5-nmu.patch
+#Patch2:		hdf5-1.6.5-norpath.patch
+#Patch3:		hdf5-1.6.5-gfortran.patch
+#Patch4:		hdf5-1.6.5-test5.patch
+#Patch5:		hdf5-1.6.5-snprintf.patch
 Patch6:		hdf5-1.6.5-lib64.patch
 URL:		http://hdf.ncsa.uiuc.edu/HDF5/
 BuildRequires:	libjpeg-static-devel
@@ -66,11 +66,11 @@ for develop applications requiring the "hdf5" library.
 %prep
 %setup -q -n %{name}-%{fversion}
 %patch0 -p1 -b .cflags
-%patch1 -p1 -b .nmu
-%patch2 -p1 -b .norpath
-%patch3 -p1 -b .gfortran
-%patch4 -p1 -b .test5
-%patch5 -p1 -b .snprintf
+#%patch1 -p1 -b .nmu
+#%patch2 -p1 -b .norpath
+#%patch3 -p1 -b .gfortran
+#%patch4 -p1 -b .test5
+#%patch5 -p1 -b .snprintf
 %ifarch x86_64
 %patch6 -p1 -b .64bit
 %endif
@@ -95,7 +95,7 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 %endif
 
 CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
-./configure --prefix=%{_prefix} \
+./configure2_5x --prefix=%{_prefix} \
 	--enable-cxx \
 	--enable-threadsafe \
 	--with-pthread \
