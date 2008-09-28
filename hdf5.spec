@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.1
-%define release %mkrel 2
+%define release %mkrel 3
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -62,6 +62,7 @@ linked with hdf5 libraries.
 Summary:	HDF5 high level libraries
 Group:		System/Libraries
 Provides:       %{name} = %{version}-%{release}
+Conflicts:	%{mklibname hdf 5 0}
 
 %description -n %{libname_hl}
 This package contains the high level libraries needed to run programs dynamically
