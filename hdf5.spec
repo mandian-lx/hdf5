@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.1
-%define release %mkrel 1
+%define release %mkrel 2
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -73,6 +73,8 @@ Summary:	Static libraries and header files for hdf5 development
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
+Requires:	%{libname_hl} = %{version}
+Obsoletes:	%{mklibname -d hdf 5 0} < %{version}
 
 %description -n %{develname}
 This package provides static libraries and header files needed
@@ -177,6 +179,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
-#%multiarch %{multiarch_includedir}/*.h
-
 
