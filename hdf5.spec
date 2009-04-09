@@ -25,6 +25,7 @@ Patch5:		%{name}-1.8.0-scaleoffset.patch
 Patch6:		%{name}-%{version}-build.patch
 Patch7:		%{name}-1.8.0-longdouble.patch
 Patch8:		%{name}-%{version}-lib64.patch
+Patch9:		hdf5-1.8.1-fix-str-fmt.patch
 URL:		http://hdf.ncsa.uiuc.edu/HDF5/
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
@@ -96,7 +97,7 @@ for develop applications requiring the "hdf5" library.
 %ifarch x86_64
 %patch8
 %endif
-
+%patch9 -p0
 
 %build
 find $RPM_BUILD_ROOT -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
