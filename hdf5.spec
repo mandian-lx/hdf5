@@ -1,13 +1,13 @@
 %define _disable_ld_no_undefined 1
 
 %define name	hdf5
-%define major	5
-%define major_hl	0
+%define major	6
+%define major_hl	6
 %define libname %mklibname hdf5_ %{major}
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
-%define version 1.8.1
-%define release %mkrel 3
+%define version 1.8.3
+%define release %mkrel 1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -15,18 +15,15 @@ Version:	%{version}
 Release:	%{release}
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
-Source0:	ftp://hdf.ncsa.uiuc.edu/HDF5/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
-Patch0:		hdf5-1.6.4-cflags.patch
-Patch1:         %{name}-%{version}-gcc4.patch
-Patch2:		%{name}-1.8.0-signal.patch
-Patch3:		%{name}-1.8.0-destdir.patch
-#Patch4:		%{name}-1.8.0-multiarch.patch
-Patch5:		%{name}-1.8.0-scaleoffset.patch
-Patch6:		%{name}-%{version}-build.patch
-Patch7:		%{name}-1.8.0-longdouble.patch
-Patch8:		%{name}-%{version}-lib64.patch
-Patch9:		hdf5-1.8.1-fix-str-fmt.patch
 URL:		http://hdf.ncsa.uiuc.edu/HDF5/
+Source0:	ftp://hdf.ncsa.uiuc.edu/HDF5/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
+Patch1:     %{name}-1.8.1-gcc4.patch
+Patch2:		%{name}-1.8.3-signal.patch
+Patch5:		%{name}-1.8.3-scaleoffset.patch
+Patch6:		%{name}-1.8.1-build.patch
+Patch7:		%{name}-1.8.0-longdouble.patch
+Patch8:		%{name}-1.8.1-lib64.patch
+Patch9:		%{name}-1.8.3-fix-str-fmt.patch
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
@@ -84,24 +81,21 @@ for develop applications requiring the "hdf5" library.
 
 %prep
 %setup -q
-%patch0 -p1 
 %patch1 -p0
 %patch2 -p1
-%patch3 -p1
-#%patch4 -p1
 %patch5 -p1
-%patch6
+#%patch6
 %ifarch ppc64
 %patch7 -p1
 %endif
 %ifarch x86_64
 %patch8
 %endif
-%patch9 -p0
+%patch9 -p1
 
 %build
-find $RPM_BUILD_ROOT -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
-find $RPM_BUILD_ROOT -type f -size 0 -name .depend -print0 |xargs -0 rm -f 
+find %{buildroot} -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
+find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f 
 
 OPT_FLAGS="$RPM_OPT_FLAGS -O1 -Wno-long-long -Wfloat-equal -Wmissing-format-attribute -Wpadded"
 %ifarch %{ix86} x86_64
@@ -138,20 +132,20 @@ CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_libdir}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_libdir}
 %makeinstall
-#cp -p test/.libs/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/
-#ln -s %{_libdir}/libh5test.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libh5test.so.0
-#rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
-%multiarch_includes $RPM_BUILD_ROOT%{_includedir}/H5pubconf.h
+#cp -p test/.libs/libh5test.so.0.0.0 %{buildroot}%{_libdir}/
+#ln -s %{_libdir}/libh5test.so.0.0.0 %{buildroot}%{_libdir}/libh5test.so.0
+#rm -rf %{buildroot}%{_prefix}/doc
+%multiarch_includes %{buildroot}%{_includedir}/H5pubconf.h
 
 perl -pi -e \
-	"s@^libdir=\'/usr/lib\'@libdir=\'%{_libdir}\'@g" $RPM_BUILD_ROOT%{_libdir}/*.la
+	"s@^libdir=\'/usr/lib\'@libdir=\'%{_libdir}\'@g" %{buildroot}%{_libdir}/*.la
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
