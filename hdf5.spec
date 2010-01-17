@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.4
-%define release %mkrel 1
+%define release %mkrel 2
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -17,15 +17,17 @@ License:	Distributable (see included COPYING)
 Group:		System/Libraries
 URL:		http://www.hdfgroup.org/HDF5/
 Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}.tar.bz2
-#Patch1:     	%{name}-1.8.1-gcc4.patch
+Patch0:		%{name}-1.8.4-as-needed.patch
 Patch2:		%{name}-1.8.4-signal.patch
 Patch5:		%{name}-1.8.3-scaleoffset.patch
-Patch7:		%{name}-1.8.0-longdouble.patch
+#Patch7:		%{name}-1.8.0-longdouble.patch
 Patch8:		%{name}-1.8.1-lib64.patch
 Patch9:		%{name}-1.8.4-fix-str-fmt.patch
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
+BuildRequires:	krb5-devel
+BuildRequires:	gcc-gfortran
 Requires:	%{libname} = %{version}-%{release}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -80,16 +82,17 @@ for develop applications requiring the "hdf5" library.
 
 %prep
 %setup -q
-#%patch1 -p0
+%patch0 -p0
 %patch2 -p1
 %patch5 -p1
-%ifarch ppc64
-%patch7 -p1
-%endif
+#%ifarch ppc64
+#%patch7 -p1
+#%endif
 %ifarch x86_64
 %patch8 -p0
 %endif
 %patch9 -p0
+find -name '*.[ch]' -o -name '*.f90' -exec chmod -x {} +
 
 %build
 find %{buildroot} -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
@@ -110,16 +113,22 @@ OPT_FLAGS=`echo "$OPT_FLAGS -fno-omit-frame-pointer" | sed -e "s/-fomit-frame-po
 OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 %endif
 
+%ifarch x86_64
+OPT_FLAGS="$OPT_FLAGS -fPIC"
+%endif
+
 CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %configure2_5x --prefix=%{_prefix} \
-	--enable-threadsafe \
+	--disable-dependency-tracking \
+	--enable-cxx \
+	--enable-fortran \
 	--with-pthread \
-	--enable-stream-vfd \
-	--with-hdf4=/usr/include \
 	--enable-linux-lfs \
-	--enable-production=yes \
-	--disable-rpath
-
+	%ifarch x86_64
+	--with-pic \
+	%endif
+	--enable-production=yes
+	
 %make
 
 # all tests must pass on the following architectures
@@ -133,9 +142,6 @@ CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_libdir}
 %makeinstall
-#cp -p test/.libs/libh5test.so.0.0.0 %{buildroot}%{_libdir}/
-#ln -s %{_libdir}/libh5test.so.0.0.0 %{buildroot}%{_libdir}/libh5test.so.0
-#rm -rf %{buildroot}%{_prefix}/doc
 %multiarch_includes %{buildroot}%{_includedir}/H5pubconf.h
 
 perl -pi -e \
@@ -161,10 +167,14 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root,755)
 %{_libdir}/libhdf5.so.%{major}*
+%{_libdir}/libhdf5_cpp.so.%{major}*
+%{_libdir}/libhdf5_fortran.so.%{major}*
 
 %files -n %{libname_hl}
 %defattr(-,root,root,755)
 %{_libdir}/libhdf5_hl.so.%{major_hl}*
+%{_libdir}/libhdf5_hl_cpp.so.%{major_hl}*
+%{_libdir}/libhdf5hl_fortran.so.%{major_hl}*
 
 %files -n %{develname}
 %defattr(-,root,root)
