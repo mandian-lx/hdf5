@@ -8,6 +8,7 @@
 %define develname %mklibname %{name} -d
 %define version 1.8.4
 %define release %mkrel 2
+%define postrel patch1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -16,7 +17,7 @@ Release:	%{release}
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 URL:		http://www.hdfgroup.org/HDF5/
-Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}.tar.bz2
+Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}-%{postrel}.tar.bz2
 Patch0:		%{name}-1.8.4-as-needed.patch
 Patch2:		%{name}-1.8.4-signal.patch
 Patch5:		%{name}-1.8.3-scaleoffset.patch
@@ -47,11 +48,10 @@ applications. HDF5 includes the following improvements.
      support for parallel i/o, threads, and other requirements imposed
      by modern systems and applications.
 
-
 %package -n %{libname}
 Summary:	HDF5 libraries
 Group:		System/Libraries
-Provides:       %{name} = %{version}-%{release}
+Provides:	%{name} = %{version}-%{release}
 
 %description -n %{libname}
 This package contains the libraries needed to run programs dynamically
@@ -60,13 +60,12 @@ linked with hdf5 libraries.
 %package -n %{libname_hl}
 Summary:	HDF5 high level libraries
 Group:		System/Libraries
-Provides:       %{name} = %{version}-%{release}
+Provides:	%{name} = %{version}-%{release}
 Conflicts:	%{mklibname hdf 5 0}
 
 %description -n %{libname_hl}
 This package contains the high level libraries needed to run programs dynamically
 linked with hdf5 libraries.
-
 
 %package -n %{develname}
 Summary:	Static libraries and header files for hdf5 development
@@ -81,7 +80,7 @@ This package provides static libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}-%{postrel}
 %patch0 -p0
 %patch2 -p1
 %patch5 -p1
@@ -96,9 +95,9 @@ find -name '*.[ch]' -o -name '*.f90' -exec chmod -x {} +
 
 %build
 find %{buildroot} -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
-find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f 
+find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f
 
-OPT_FLAGS="$RPM_OPT_FLAGS -O1 -Wno-long-long -Wfloat-equal -Wmissing-format-attribute -Wpadded"
+OPT_FLAGS="%{optflags} -O1 -Wno-long-long -Wfloat-equal -Wmissing-format-attribute -Wpadded"
 %ifarch %{ix86} x86_64
 OPT_FLAGS="$OPT_FLAGS -mieee-fp"
 %endif
@@ -117,7 +116,8 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 OPT_FLAGS="$OPT_FLAGS -fPIC"
 %endif
 
-CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
+#(tpg) disable all strange flags
+#CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %configure2_5x --prefix=%{_prefix} \
 	--disable-dependency-tracking \
 	--enable-cxx \
@@ -128,9 +128,10 @@ CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 	--with-pic \
 	%endif
 	--enable-production=yes
-	
+
 %make
 
+%check
 # all tests must pass on the following architectures
 %ifarch %{ix86} x86_64
 %make check || echo "make check failed"
@@ -141,12 +142,11 @@ CFLAGS="$OPT_FLAGS" CXXFLAGS="$OPT_FLAGS" \
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_libdir}
-%makeinstall
+%makeinstall_std
 %multiarch_includes %{buildroot}%{_includedir}/H5pubconf.h
 
 perl -pi -e \
 	"s@^libdir=\'/usr/lib\'@libdir=\'%{_libdir}\'@g" %{buildroot}%{_libdir}/*.la
-
 
 %clean
 rm -rf %{buildroot}
@@ -183,4 +183,3 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
-
