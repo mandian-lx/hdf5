@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.4
-%define release %mkrel 3
+%define release %mkrel 4
 %define postrel patch1
 
 Summary:	HDF5 library
@@ -52,6 +52,7 @@ applications. HDF5 includes the following improvements.
 Summary:	HDF5 libraries
 Group:		System/Libraries
 Provides:	%{name} = %{version}-%{release}
+Provides:	lib%{name} = %{version}-%{release}
 
 %description -n %{libname}
 This package contains the libraries needed to run programs dynamically
@@ -61,6 +62,7 @@ linked with hdf5 libraries.
 Summary:	HDF5 high level libraries
 Group:		System/Libraries
 Provides:	%{name} = %{version}-%{release}
+Provides:	lib%{name}_hl = %{version}-%{release}
 Conflicts:	%{mklibname hdf 5 0}
 
 %description -n %{libname_hl}
