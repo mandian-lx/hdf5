@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.4
-%define release %mkrel 2
+%define release %mkrel 3
 %define postrel patch1
 
 Summary:	HDF5 library
