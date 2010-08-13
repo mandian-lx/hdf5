@@ -1,4 +1,4 @@
-%define _disable_ld_no_undefined 1
+%define _disable_ld_no_undefined 0
 
 %define name	hdf5
 %define major	6
@@ -6,9 +6,8 @@
 %define libname %mklibname hdf5_ %{major}
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
-%define version 1.8.4
-%define release %mkrel 4
-%define postrel patch1
+%define version 1.8.5
+%define release %mkrel 1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -17,13 +16,12 @@ Release:	%{release}
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 URL:		http://www.hdfgroup.org/HDF5/
-Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}-%{postrel}.tar.bz2
+Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-1.8.4-as-needed.patch
-Patch2:		%{name}-1.8.4-signal.patch
+#Patch2:		%{name}-1.8.4-signal.patch
 Patch5:		%{name}-1.8.3-scaleoffset.patch
-#Patch7:		%{name}-1.8.0-longdouble.patch
 Patch8:		%{name}-1.8.1-lib64.patch
-Patch9:		%{name}-1.8.4-fix-str-fmt.patch
+Patch9:		%{name}-1.8.5-fix-str-fmt.patch
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
@@ -82,13 +80,10 @@ This package provides static libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
 %prep
-%setup -qn %{name}-%{version}-%{postrel}
+%setup -qn %{name}-%{version}
 %patch0 -p0
-%patch2 -p1
+#%patch2 -p1
 %patch5 -p1
-#%ifarch ppc64
-#%patch7 -p1
-#%endif
 %ifarch x86_64
 %patch8 -p0
 %endif
@@ -185,3 +180,4 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
+%{_datadir}/hdf5_examples/*
