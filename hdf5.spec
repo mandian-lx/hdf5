@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.5
-%define release %mkrel 1
+%define release %mkrel 2
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -140,6 +140,7 @@ OPT_FLAGS="$OPT_FLAGS -fPIC"
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_libdir}
 %makeinstall_std
+
 %multiarch_includes %{buildroot}%{_includedir}/H5pubconf.h
 
 perl -pi -e \
@@ -180,4 +181,5 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
+%{multiarch_includedir}/H5pubconf.h
 %{_datadir}/hdf5_examples/*
