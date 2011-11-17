@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.5
-%define release %mkrel 2
+%define release %mkrel 3
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -49,7 +49,6 @@ applications. HDF5 includes the following improvements.
 %package -n %{libname}
 Summary:	HDF5 libraries
 Group:		System/Libraries
-Provides:	%{name} = %{version}-%{release}
 Provides:	lib%{name} = %{version}-%{release}
 
 %description -n %{libname}
@@ -59,7 +58,6 @@ linked with hdf5 libraries.
 %package -n %{libname_hl}
 Summary:	HDF5 high level libraries
 Group:		System/Libraries
-Provides:	%{name} = %{version}-%{release}
 Provides:	lib%{name}_hl = %{version}-%{release}
 Conflicts:	%{mklibname hdf 5 0}
 
