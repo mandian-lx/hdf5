@@ -80,7 +80,7 @@ for develop applications requiring the "hdf5" library.
 %prep
 %setup -qn %{name}-%{version}
 %patch0 -p0
-#%patch2 -p1
+#%#patch2 -p1
 %patch5 -p1
 %ifarch x86_64
 %patch8 -p0
