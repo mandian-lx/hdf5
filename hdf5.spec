@@ -1,13 +1,13 @@
 %define _disable_ld_no_undefined 0
 
 %define name	hdf5
-%define major	6
-%define major_hl	6
+%define major	7
+%define major_hl	7
 %define libname %mklibname hdf5_ %{major}
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
-%define version 1.8.5
-%define release %mkrel 3
+%define version 1.8.8
+%define release %mkrel 1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -17,11 +17,8 @@ License:	Distributable (see included COPYING)
 Group:		System/Libraries
 URL:		http://www.hdfgroup.org/HDF5/
 Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}.tar.bz2
-Patch0:		%{name}-1.8.4-as-needed.patch
-#Patch2:		%{name}-1.8.4-signal.patch
-Patch5:		%{name}-1.8.3-scaleoffset.patch
+Patch0:		%{name}-1.8.8-fix-str-fmt.patch
 Patch8:		%{name}-1.8.1-lib64.patch
-Patch9:		%{name}-1.8.5-fix-str-fmt.patch
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
@@ -79,13 +76,10 @@ for develop applications requiring the "hdf5" library.
 
 %prep
 %setup -qn %{name}-%{version}
-%patch0 -p0
-#%#patch2 -p1
-%patch5 -p1
+%patch0 -p1
 %ifarch x86_64
 %patch8 -p0
 %endif
-%patch9 -p0
 find -name '*.[ch]' -o -name '*.f90' -exec chmod -x {} +
 
 %build
