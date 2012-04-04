@@ -7,7 +7,7 @@
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
 %define version 1.8.8
-%define release %mkrel 1
+%define release %mkrel 2
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -168,8 +168,7 @@ rm -rf %{buildroot}
 
 %files -n %{develname}
 %defattr(-,root,root)
-%{_libdir}/*.a
-%{_libdir}/*.la
+%{_libdir}/*.*a
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
