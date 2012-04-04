@@ -172,5 +172,4 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_includedir}/*
-%{multiarch_includedir}/H5pubconf.h
 %{_datadir}/hdf5_examples/*
