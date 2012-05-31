@@ -6,8 +6,9 @@
 %define libname %mklibname hdf5_ %{major}
 %define libname_hl %mklibname hdf5_hl %{major_hl}
 %define develname %mklibname %{name} -d
-%define version 1.8.8
-%define release %mkrel 2
+%define develnamest %mklibname %{name} -d -s
+%define version 1.8.9
+%define release %mkrel 1
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -25,7 +26,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	krb5-devel
 BuildRequires:	gcc-gfortran
 Requires:	%{libname} = %{version}-%{release}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 HDF5 is a library and file format for storing scientific data. It was
@@ -63,7 +63,7 @@ This package contains the high level libraries needed to run programs dynamicall
 linked with hdf5 libraries.
 
 %package -n %{develname}
-Summary:	Static libraries and header files for hdf5 development
+Summary:	Devel libraries and header files for hdf5 development
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
@@ -71,12 +71,36 @@ Requires:	%{libname_hl} = %{version}
 Obsoletes:	%{mklibname -d hdf 5 0} < %{version}
 
 %description -n %{develname}
+This package provides devel libraries and header files needed
+for develop applications requiring the "hdf5" library.
+
+
+
+
+
+
+
+
+
+%package -n %{develnamest}
+Summary:	Static libraries and header files for hdf5 development
+Group:		Development/C
+Provides:	%{name}-devel-static = %{version}-%{release}
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{version}
+Requires:	%{libname_hl} = %{version}
+Obsoletes:	%{mklibname -d hdf 5 0} < %{version}
+
+%description -n %{develnamest}
 This package provides static libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
+
+
+
 %prep
 %setup -qn %{name}-%{version}
-%patch0 -p1
+#%patch0 -p1
 %ifarch x86_64
 %patch8 -p0
 %endif
@@ -120,56 +144,42 @@ OPT_FLAGS="$OPT_FLAGS -fPIC"
 
 %make
 
-%check
+#%check
 # all tests must pass on the following architectures
-%ifarch %{ix86} x86_64
-%make check || echo "make check failed"
-%else
-%make -k check || echo "make check failed"
-%endif
+#%ifarch %{ix86} x86_64
+#%make check || echo "make check failed"
+#%else
+#%make -k check || echo "make check failed"
+#%endif
 
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_libdir}
 %makeinstall_std
 
-%multiarch_includes %{buildroot}%{_includedir}/H5pubconf.h
-
-perl -pi -e \
-	"s@^libdir=\'/usr/lib\'@libdir=\'%{_libdir}\'@g" %{buildroot}%{_libdir}/*.la
-
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
+%multiarch_includes %{buildroot}/%{_includedir}/H5pubconf.h
 
 %files
-%defattr(-,root,root)
 %doc COPYING MANIFEST README.txt release_docs/RELEASE.txt
 %{_bindir}/*
 
 %files -n %{libname}
-%defattr(-,root,root,755)
 %{_libdir}/libhdf5.so.%{major}*
 %{_libdir}/libhdf5_cpp.so.%{major}*
 %{_libdir}/libhdf5_fortran.so.%{major}*
 
 %files -n %{libname_hl}
-%defattr(-,root,root,755)
 %{_libdir}/libhdf5_hl.so.%{major_hl}*
 %{_libdir}/libhdf5_hl_cpp.so.%{major_hl}*
 %{_libdir}/libhdf5hl_fortran.so.%{major_hl}*
 
-%files -n %{develname}
-%defattr(-,root,root)
+%files -n %{develnamest}
 %{_libdir}/*.*a
+
+%files -n %{develname}
 %{_libdir}/*.so
 %{_libdir}/*.settings
-%{_includedir}/*
-%{_datadir}/hdf5_examples/*
+%{_includedir}/*.h
+%{_includedir}/*.mod
+%{_datadir}/hdf5_examples/
+%multiarch %{multiarch_includedir}/H5pubconf.h
