@@ -183,3 +183,108 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
 %multiarch %{multiarch_includedir}/H5pubconf.h
+
+
+%changelog
+* Thu May 31 2012 Alexander Khrukin <akhrukin@mandriva.org> 1.8.9-1mdv2012.0
++ Revision: 801590
+- version update 1.8.9
+
+* Wed Apr 04 2012 Paulo Andrade <pcpa@mandriva.com.br> 1.8.8-2
++ Revision: 789246
+- Rebuild for .la files removal.
+
+* Thu Dec 01 2011 Andrey Bondrov <abondrov@mandriva.org> 1.8.8-1
++ Revision: 737050
+- New version 1.8.8, new library major 7
+
+* Thu Nov 17 2011 Paulo Andrade <pcpa@mandriva.com.br> 1.8.5-3
++ Revision: 731478
+- Do not provide hdf5 in libraries otherwise buildrequires hdf5 fails.
+
+* Mon May 02 2011 Oden Eriksson <oeriksson@mandriva.com> 1.8.5-2
++ Revision: 661671
+- multiarch fixes
+
+* Fri Aug 13 2010 Emmanuel Andry <eandry@mandriva.org> 1.8.5-1mdv2011.0
++ Revision: 569401
+- drop p
+
+* Mon Apr 26 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 1.8.4-4mdv2010.1
++ Revision: 539387
+- add virtual provides needef for hdf-java
+
+* Mon Apr 26 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 1.8.4-3mdv2010.1
++ Revision: 539340
+- update to patch1 postrelease
+- disable all strange gcc flags
+- spec file clean
+
+* Sun Jan 17 2010 Emmanuel Andry <eandry@mandriva.org> 1.8.4-2mdv2010.1
++ Revision: 492750
+- fix linking with p0
+- drop p7 fixed upstream
+- enable c++ and fortran support
+- drop obsolete configure arguments
+- use pic for x86_64
+- update files list
+- remove threadsafe, not compatible with c++
+
+* Thu Jan 07 2010 Emmanuel Andry <eandry@mandriva.org> 1.8.4-1mdv2010.1
++ Revision: 487354
+- New version 1.8.4
+- fix SOURCE and URL
+- drop p1 (merged upstream)
+- rediff p2 and p9
+
+* Sat Jul 25 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1.8.3-1mdv2010.0
++ Revision: 399850
+- new version
+
+* Thu Apr 09 2009 Funda Wang <fwang@mandriva.org> 1.8.1-3mdv2009.1
++ Revision: 365348
+- fix str fmt
+
+* Sun Sep 28 2008 Funda Wang <fwang@mandriva.org> 1.8.1-3mdv2009.0
++ Revision: 288987
+- conflicts with old lib
+
+* Sun Sep 28 2008 Funda Wang <fwang@mandriva.org> 1.8.1-2mdv2009.0
++ Revision: 288976
+- obsoletes old devel package
+
+* Tue Aug 19 2008 Emmanuel Andry <eandry@mandriva.org> 1.8.1-1mdv2009.0
++ Revision: 274052
+- fix typos
+- fix file list
+- enable parallel build
+- define _disable_ld_no_undefined
+- enable threadsafe, cxx breaks build
+- update file list
+- disable P4, use multiarch macro
+- use P8 and P6 from opensuse
+- add package for high level libraries
+- update major
+- fix summary
+- add fedora patches
+- disable threadsafe, incompatible with cxx
+- use configure macro
+- New version
+- drop patches 1,2,3,4 and 5
+- use configure2_5x
+- Apply devel policy
+- protect major
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+  + Olivier Blin <blino@mandriva.org>
+    - restore BuildRoot
+
+* Mon Dec 17 2007 Thierry Vignaud <tv@mandriva.org> 1.6.5-3mdv2008.1
++ Revision: 126630
+- kill re-definition of %%buildroot on Pixel's request
+
