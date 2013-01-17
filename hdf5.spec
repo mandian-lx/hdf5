@@ -59,8 +59,8 @@ Provides:	lib%{name}_hl = %{version}-%{release}
 Conflicts:	%{mklibname hdf 5 0}
 
 %description -n %{libname_hl}
-This package contains the high level libraries needed to run programs dynamically
-linked with hdf5 libraries.
+This package contains the high level libraries needed to run programs
+dynamically linked with hdf5 libraries.
 
 %package -n %{develname}
 Summary:	Devel libraries and header files for hdf5 development
