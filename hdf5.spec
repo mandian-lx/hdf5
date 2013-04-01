@@ -8,7 +8,7 @@
 %define develname %mklibname %{name} -d
 %define develnamest %mklibname %{name} -d -s
 %define version 1.8.9
-%define release %mkrel 1
+%define release 2
 
 Summary:	HDF5 library
 Name:		%{name}
@@ -20,7 +20,7 @@ URL:		http://www.hdfgroup.org/HDF5/
 Source0:	ftp://ftp.hdfgroup.org/HDF5/current/src/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-1.8.8-fix-str-fmt.patch
 Patch8:		%{name}-1.8.1-lib64.patch
-BuildRequires:	libjpeg-static-devel
+BuildRequires:	jpeg-static-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
 BuildRequires:	krb5-devel
@@ -182,7 +182,6 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.h
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
-%multiarch %{multiarch_includedir}/H5pubconf.h
 
 
 %changelog
