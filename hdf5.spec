@@ -182,7 +182,7 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.h
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
-
+%{multiarch_includedir}/H5pubconf.h
 
 %changelog
 * Thu May 31 2012 Alexander Khrukin <akhrukin@mandriva.org> 1.8.9-1mdv2012.0
