@@ -132,6 +132,18 @@ mkdir -p %{buildroot}%{_libdir}
 %files
 %doc COPYING MANIFEST README.txt release_docs/RELEASE.txt
 %{_bindir}/*
+%{_libdir}/libhdf5.so.8
+%{_libdir}/libhdf5.so.8.0.1
+%{_libdir}/libhdf5_cpp.so.8
+%{_libdir}/libhdf5_cpp.so.8.0.1
+%{_libdir}/libhdf5_fortran.so.8
+%{_libdir}/libhdf5_fortran.so.8.0.1
+%{_libdir}/libhdf5_hl.so.8
+%{_libdir}/libhdf5_hl.so.8.0.1
+%{_libdir}/libhdf5_hl_cpp.so.8
+%{_libdir}/libhdf5_hl_cpp.so.8.0.1
+%{_libdir}/libhdf5hl_fortran.so.8
+%{_libdir}/libhdf5hl_fortran.so.8.0.1
 
 %files -n %{libname}
 %{_libdir}/libhdf5.so.%{major}*
