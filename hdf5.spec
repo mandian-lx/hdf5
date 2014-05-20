@@ -7,8 +7,9 @@
 
 Summary:	HDF5 library
 
+
 Name:		hdf5
-Version:	1.8.12
+Version:	1.8.13
 Release:	1
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
@@ -42,6 +43,7 @@ applications. HDF5 includes the following improvements.
 %package -n %{libname}
 Summary:	HDF5 libraries
 
+
 Group:		System/Libraries
 
 %description -n %{libname}
@@ -51,6 +53,7 @@ linked with hdf5 libraries.
 %package -n %{libname_hl}
 Summary:	HDF5 high level libraries
 
+
 Group:		System/Libraries
 
 %description -n %{libname_hl}
@@ -59,6 +62,7 @@ dynamically linked with hdf5 libraries.
 
 %package -n %{devname}
 Summary:	Devel libraries and header files for hdf5 development
+
 
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
@@ -150,5 +154,6 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
 %{multiarch_includedir}/H5pubconf.h
+
 
 
