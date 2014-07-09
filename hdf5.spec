@@ -105,7 +105,7 @@ OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
 OPT_FLAGS="$OPT_FLAGS -fPIC"
 %endif
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--disable-dependency-tracking \
 	--enable-cxx \
