@@ -9,8 +9,8 @@ Summary:	HDF5 library
 
 
 Name:		hdf5
-Version:	1.8.13
-Release:	4
+Version:	1.8.14
+Release:	1
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 Url:		http://www.hdfgroup.org/HDF5/
@@ -154,6 +154,3 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
 %{multiarch_includedir}/H5pubconf.h
-
-
-
