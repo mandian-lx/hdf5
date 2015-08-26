@@ -1,4 +1,5 @@
 %define _disable_ld_no_undefined 0
+%define _disable_lto 1
 
 %define major	10
 %define libname %mklibname hdf5_ %{major}
