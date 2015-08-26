@@ -3,3 +3,4 @@ removed_sources:
   hdf5-1.8.9.tar.bz2: 7d5e5e8caa5970c65e70a5b4ad6787efe0bf70bb
 sources:
   hdf5-1.8.13.tar.bz2: 712955025f03db808f000d8f4976b8df0c0d37b5
+  hdf5-1.8.15-patch1.tar.bz2: 82ed248e5d0293bc1dba4c13c9b2880a26643ee0

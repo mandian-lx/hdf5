@@ -1,6 +1,6 @@
 %define _disable_ld_no_undefined 0
 
-%define major	8
+%define major	10
 %define libname %mklibname hdf5_ %{major}
 %define libname_hl %mklibname hdf5_hl %{major}
 %define devname %mklibname %{name} -d
@@ -9,12 +9,12 @@ Summary:	HDF5 library
 
 
 Name:		hdf5
-Version:	1.8.13
-Release:	5
+Version:	1.8.15
+Release:	1
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 Url:		http://www.hdfgroup.org/HDF5/
-Source0:	ftp://ftp.hdfgroup.org:21/HDF5/current/src/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.hdfgroup.org/ftp/HDF5/current/src/%{name}-%{version}-patch1.tar.bz2
 Patch0:		%{name}-1.8.8-fix-str-fmt.patch
 Patch8:		%{name}-1.8.1-lib64.patch
 
@@ -75,7 +75,7 @@ This package provides devel libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-patch1
 #%patch0 -p1
 %ifarch x86_64
 %patch8 -p0
@@ -86,35 +86,14 @@ find -name '*.[ch]' -o -name '*.f90' -exec chmod -x {} +
 find %{buildroot} -type f -size 0 -name Dependencies -print0 |xargs -0 rm -f
 find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f
 
-OPT_FLAGS="%{optflags} -O1 -Wno-long-long -Wfloat-equal -Wmissing-format-attribute -Wpadded"
-%ifarch %{ix86} x86_64
-OPT_FLAGS="$OPT_FLAGS -mieee-fp"
-%endif
-
-# (gb) 1.4.2-2mdk: "2.96" still deficient wrt. C++ exception handling on ia32
-%ifarch %ix86
-OPT_FLAGS=`echo "$OPT_FLAGS -fno-omit-frame-pointer" | sed -e "s/-fomit-frame-pointer//g"`
-%endif
-
-# (gb) 1.4.2-2mdk: constants merging causes troubles with long doubles on ia64
-%ifarch ia64
-OPT_FLAGS="$OPT_FLAGS -fno-merge-constants"
-%endif
-
-%ifarch x86_64
-OPT_FLAGS="$OPT_FLAGS -fPIC"
-%endif
-
 %configure \
 	--disable-static \
 	--disable-dependency-tracking \
 	--enable-cxx \
 	--enable-fortran \
+	--enable-fortran2003 \
 	--with-pthread \
 	--enable-linux-lfs \
-%ifarch x86_64
-	--with-pic \
-%endif
 	--enable-production=yes
 
 %make
