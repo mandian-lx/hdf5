@@ -1,21 +1,22 @@
 %define _disable_ld_no_undefined 0
 %define _disable_lto 1
 
-%define major	10
+%define major	101
+%define hl_major	100
 %define libname %mklibname hdf5_ %{major}
-%define libname_hl %mklibname hdf5_hl %{major}
+%define libname_hl %mklibname hdf5_hl %{hl_major}
 %define devname %mklibname %{name} -d
 
 Summary:	HDF5 library
 
 
 Name:		hdf5
-Version:	1.8.15
+Version:	1.10.1
 Release:	1
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 Url:		http://www.hdfgroup.org/HDF5/
-Source0:	http://ftp.hdfgroup.org/ftp/HDF5/current/src/%{name}-%{version}-patch1.tar.bz2
+Source0:	http://ftp.hdfgroup.org/ftp/HDF5/current/src/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-1.8.8-fix-str-fmt.patch
 Patch8:		%{name}-1.8.1-lib64.patch
 
@@ -53,8 +54,6 @@ linked with hdf5 libraries.
 
 %package -n %{libname_hl}
 Summary:	HDF5 high level libraries
-
-
 Group:		System/Libraries
 
 %description -n %{libname_hl}
@@ -63,8 +62,6 @@ dynamically linked with hdf5 libraries.
 
 %package -n %{devname}
 Summary:	Devel libraries and header files for hdf5 development
-
-
 Group:		Development/C
 Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
@@ -76,8 +73,8 @@ This package provides devel libraries and header files needed
 for develop applications requiring the "hdf5" library.
 
 %prep
-%setup -q -n %{name}-%{version}-patch1
-#%patch0 -p1
+%setup -q
+#patch0 -p1
 %ifarch x86_64
 %patch8 -p0
 %endif
@@ -95,7 +92,7 @@ find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f
 	--enable-fortran2003 \
 	--with-pthread \
 	--enable-linux-lfs \
-	--enable-production=yes
+	--enable-build-mode=production
 
 %make
 
@@ -120,12 +117,12 @@ mkdir -p %{buildroot}%{_libdir}
 %files -n %{libname}
 %{_libdir}/libhdf5.so.%{major}*
 %{_libdir}/libhdf5_cpp.so.%{major}*
-%{_libdir}/libhdf5_fortran.so.%{major}*
+%{_libdir}/libhdf5_fortran.so.%{hl_major}*
 
 %files -n %{libname_hl}
-%{_libdir}/libhdf5_hl.so.%{major}*
-%{_libdir}/libhdf5_hl_cpp.so.%{major}*
-%{_libdir}/libhdf5hl_fortran.so.%{major}*
+%{_libdir}/libhdf5_hl.so.%{hl_major}*
+%{_libdir}/libhdf5_hl_cpp.so.%{hl_major}*
+%{_libdir}/libhdf5hl_fortran.so.%{hl_major}*
 
 %files -n %{devname}
 %{_libdir}/*.so

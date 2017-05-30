@@ -1,5 +1,2 @@
-removed_sources:
-  hdf5-1.8.12.tar.bz2: 8414ca0e6ff7d08e423955960d641ec5f309a55f
-  hdf5-1.8.9.tar.bz2: 7d5e5e8caa5970c65e70a5b4ad6787efe0bf70bb
 sources:
-  hdf5-1.8.15-patch1.tar.bz2: 82ed248e5d0293bc1dba4c13c9b2880a26643ee0
+  hdf5-1.10.1.tar.bz2: 22edee1f4ed603ea9544daec3492874fa3028bbb
