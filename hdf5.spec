@@ -12,7 +12,7 @@ Summary:	HDF5 library
 
 Name:		hdf5
 Version:	1.10.1
-Release:	1
+Release:	2
 License:	Distributable (see included COPYING)
 Group:		System/Libraries
 Url:		http://www.hdfgroup.org/HDF5/
@@ -108,8 +108,6 @@ find %{buildroot} -type f -size 0 -name .depend -print0 |xargs -0 rm -f
 mkdir -p %{buildroot}%{_libdir}
 %makeinstall_std
 
-%multiarch_includes %{buildroot}/%{_includedir}/H5pubconf.h
-
 %files
 %doc COPYING MANIFEST README.txt release_docs/RELEASE.txt
 %{_bindir}/*
@@ -130,7 +128,3 @@ mkdir -p %{buildroot}%{_libdir}
 %{_includedir}/*.h
 %{_includedir}/*.mod
 %{_datadir}/hdf5_examples/
-%{multiarch_includedir}/H5pubconf.h
-
-
-
